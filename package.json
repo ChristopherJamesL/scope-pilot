@@ -10,6 +10,9 @@
   ],
   "scripts": {
     "dev:client": "npm run dev --workspace client",
+    "dev:server": "npm run dev --workspace @scopepilot/server",
+    "build:server": "npm run build --workspace @scopepilot/server",
+    "typecheck:server": "npm run typecheck --workspace @scopepilot/server",
     "build:client": "npm run build --workspace client",
     "lint:client": "npm run lint --workspace client"
   },
