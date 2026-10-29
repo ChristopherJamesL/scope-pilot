@@ -13,6 +13,10 @@
     "dev:server": "npm run dev --workspace @scopepilot/server",
     "build:server": "npm run build --workspace @scopepilot/server",
     "typecheck:server": "npm run typecheck --workspace @scopepilot/server",
+    "db:generate": "npm run db:generate --workspace @scopepilot/server",
+    "db:migrate": "npm run db:migrate --workspace @scopepilot/server",
+    "db:deploy": "npm run db:deploy --workspace @scopepilot/server",
+    "db:status": "npm run db:status --workspace @scopepilot/server",
     "build:client": "npm run build --workspace client",
     "lint:client": "npm run lint --workspace client"
   },

@@ -6,6 +6,9 @@ dist/
 build/
 *.tsbuildinfo
 
+# Generated Prisma client (rebuilt with `prisma generate`)
+server/src/generated/
+
 # Environment variables (secrets). Keep .env.example committed.
 .env
 .env.*

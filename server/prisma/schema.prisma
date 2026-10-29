@@ -1,0 +1,43 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum InquiryStatus {
+  NEW
+  ANALYZED
+  CONTACTED
+  PROPOSAL_SENT
+  WON
+  LOST
+}
+
+enum AnalysisSource {
+  MOCK
+  LLM
+}
+
+model Inquiry {
+  id              String          @id @default(uuid()) @db.Uuid
+  name            String
+  email           String
+  companyName     String?
+  companySize     String?
+  problem         String          @db.Text
+  desiredSolution String?         @db.Text
+  existingTools   String?
+  websiteUrl      String?
+  budget          String
+  timeline        String
+  status          InquiryStatus   @default(NEW)
+  analysis        Json?
+  analysisSource  AnalysisSource?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  @@map("inquiries")
+}
