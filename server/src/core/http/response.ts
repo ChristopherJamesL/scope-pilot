@@ -19,3 +19,20 @@ export function sendCreated<T>(
 ) {
   return sendOk(res, { data, meta, status: 201 });
 }
+
+type ErrorOptions = {
+  status: number;
+  code: string;
+  message: string;
+  details?: unknown;
+};
+
+export function sendError(
+  res: Response,
+  { status, code, message, details = null }: ErrorOptions,
+) {
+  return res.status(status).json({
+    success: false,
+    error: { code, message, details },
+  });
+}

@@ -1,6 +1,6 @@
 import express from 'express';
 import { healthRouter } from './features/health/index.js';
-import { errorHandler, notFoundHandler } from './core/http/error-handler.js';
+import { errorHandler, notFoundHandler } from './core/middleware/error-handler.js';
 
 export const app = express();
 
