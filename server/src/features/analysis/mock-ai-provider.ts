@@ -1,8 +1,11 @@
-import type {
-  Analysis,
-  Completeness,
-  CreateInquiryInput,
-  ProposedFeature,
+import {
+  budgetLabels,
+  companySizeLabels,
+  timelineLabels,
+  type Analysis,
+  type Completeness,
+  type CreateInquiryInput,
+  type ProposedFeature,
 } from "@scopepilot/shared";
 import type { AIProvider } from "./ai-provider.js";
 
@@ -87,21 +90,6 @@ const themes: Theme[] = [
   },
 ];
 
-const budgetLabels: Record<CreateInquiryInput["budget"], string> = {
-  "under-5k": "Budget is under $5k",
-  "5k-15k": "Budget is $5k to $15k",
-  "15k-50k": "Budget is $15k to $50k",
-  "50k-plus": "Budget is above $50k",
-  "not-sure": "Budget is not yet decided",
-};
-
-const timelineLabels: Record<CreateInquiryInput["timeline"], string> = {
-  asap: "Needed as soon as possible",
-  "1-3-months": "Target delivery in 1 to 3 months",
-  "3-6-months": "Target delivery in 3 to 6 months",
-  flexible: "Timeline is flexible",
-};
-
 function firstSentence(text: string, max: number): string {
   const sentence = text.split(/(?<=[.!?])\s/)[0] ?? text;
   return sentence.length > max ? `${sentence.slice(0, max - 3).trimEnd()}...` : sentence;
@@ -138,8 +126,13 @@ export class MockAIProvider implements AIProvider {
     const who = inquiry.companyName || inquiry.name;
     const problemHeadline = firstSentence(inquiry.problem, 150);
 
-    const constraints = [budgetLabels[inquiry.budget], timelineLabels[inquiry.timeline]];
-    if (inquiry.companySize) constraints.push(`Company size: ${inquiry.companySize} people`);
+    const constraints = [
+      `Budget: ${budgetLabels[inquiry.budget]}`,
+      `Timeline: ${timelineLabels[inquiry.timeline]}`,
+    ];
+    if (inquiry.companySize) {
+      constraints.push(`Company size: ${companySizeLabels[inquiry.companySize]}`);
+    }
     if (inquiry.existingTools) constraints.push(`Currently uses: ${inquiry.existingTools}`);
 
     const openQuestions = matched.map((theme) => theme.question);

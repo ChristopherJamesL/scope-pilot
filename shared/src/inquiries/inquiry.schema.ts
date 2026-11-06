@@ -19,6 +19,27 @@ export type CompanySize = (typeof companySizes)[number];
 export type Budget = (typeof budgets)[number];
 export type Timeline = (typeof timelines)[number];
 
+// Human-readable text for each value. The form dropdowns and the AI analysis both use these.
+export const companySizeLabels: Record<CompanySize, string> = {
+  "1-10": "1-10 people",
+  "11-50": "11-50 people",
+  "51-200": "51-200 people",
+  "200+": "200+ people",
+};
+export const budgetLabels: Record<Budget, string> = {
+  "under-5k": "Under $5k",
+  "5k-15k": "$5k-$15k",
+  "15k-50k": "$15k-$50k",
+  "50k-plus": "$50k+",
+  "not-sure": "Not sure yet",
+};
+export const timelineLabels: Record<Timeline, string> = {
+  asap: "As soon as possible",
+  "1-3-months": "1-3 months",
+  "3-6-months": "3-6 months",
+  flexible: "Flexible",
+};
+
 // The form submits "" for fields the client leaves empty, so optional fields accept "".
 const optionalText = (max: number) =>
   z.string().trim().max(max, `Keep this under ${max} characters`);
