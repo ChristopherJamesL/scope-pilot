@@ -1,5 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createInquirySchema, type CreateInquiryInput } from "@scopepilot/shared";
+import {
+  createInquirySchema,
+  type CreateInquiryInput,
+} from "@scopepilot/shared";
 import { useState } from "react";
 import { useForm, type Resolver } from "react-hook-form";
 import { Button } from "../../components/ui/Button";
@@ -7,6 +10,8 @@ import { Field } from "../../components/ui/Field";
 import { Input, Select, Textarea } from "../../components/ui/FormControls";
 import { budgetOptions, companySizeOptions, timelineOptions } from "./options";
 import { sampleInquiries } from "./sampleInquiries";
+import { useSubmitInquiry } from "./hooks";
+
 import type { InquiryFormValues } from "./types";
 
 const emptyValues: InquiryFormValues = {
@@ -29,7 +34,6 @@ export function InquiryForm() {
     reset,
     formState: { errors },
   } = useForm<InquiryFormValues, unknown, CreateInquiryInput>({
-    // Cast: the required selects start as "" (not valid yet), which the schema's input type excludes.
     resolver: zodResolver(createInquirySchema) as Resolver<
       InquiryFormValues,
       unknown,
@@ -37,6 +41,7 @@ export function InquiryForm() {
     >,
     defaultValues: emptyValues,
   });
+  const { mutate, isPending } = useSubmitInquiry();
   const [sampleIndex, setSampleIndex] = useState(0);
 
   function fillSample() {
@@ -46,14 +51,16 @@ export function InquiryForm() {
   }
 
   function onSubmit(values: CreateInquiryInput) {
-    // Submission to the server comes with the inquiries endpoint.
+    mutate(values, { onSuccess: (data) => console.log(data) });
     console.log(values);
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-6">
       <div className="flex items-center justify-between rounded border border-dashed border-gray-300 bg-gray-50 px-4 py-3">
-        <p className="text-sm text-gray-600">Demo: fill the form with a realistic example.</p>
+        <p className="text-sm text-gray-600">
+          Demo: fill the form with a realistic example.
+        </p>
         <Button variant="secondary" onClick={fillSample}>
           Try a sample inquiry
         </Button>
@@ -61,16 +68,43 @@ export function InquiryForm() {
 
       <fieldset className="space-y-4">
         <legend className="mb-2 text-lg font-semibold">About you</legend>
-        <Field label="Your name" htmlFor="name" required error={errors.name?.message}>
+        <Field
+          label="Your name"
+          htmlFor="name"
+          required
+          error={errors.name?.message}
+        >
           <Input id="name" autoComplete="name" {...register("name")} />
         </Field>
-        <Field label="Email" htmlFor="email" required error={errors.email?.message}>
-          <Input id="email" type="email" autoComplete="email" {...register("email")} />
+        <Field
+          label="Email"
+          htmlFor="email"
+          required
+          error={errors.email?.message}
+        >
+          <Input
+            id="email"
+            type="email"
+            autoComplete="email"
+            {...register("email")}
+          />
         </Field>
-        <Field label="Company name" htmlFor="companyName" error={errors.companyName?.message}>
-          <Input id="companyName" autoComplete="organization" {...register("companyName")} />
+        <Field
+          label="Company name"
+          htmlFor="companyName"
+          error={errors.companyName?.message}
+        >
+          <Input
+            id="companyName"
+            autoComplete="organization"
+            {...register("companyName")}
+          />
         </Field>
-        <Field label="Company size" htmlFor="companySize" error={errors.companySize?.message}>
+        <Field
+          label="Company size"
+          htmlFor="companySize"
+          error={errors.companySize?.message}
+        >
           <Select id="companySize" {...register("companySize")}>
             <option value="">Select...</option>
             {companySizeOptions.map((o) => (
@@ -99,7 +133,11 @@ export function InquiryForm() {
           hint="Optional."
           error={errors.desiredSolution?.message}
         >
-          <Textarea id="desiredSolution" rows={3} {...register("desiredSolution")} />
+          <Textarea
+            id="desiredSolution"
+            rows={3}
+            {...register("desiredSolution")}
+          />
         </Field>
         <Field
           label="Tools or systems you use today"
@@ -115,13 +153,25 @@ export function InquiryForm() {
           hint="Optional."
           error={errors.websiteUrl?.message}
         >
-          <Input id="websiteUrl" type="url" placeholder="https://" {...register("websiteUrl")} />
+          <Input
+            id="websiteUrl"
+            type="url"
+            placeholder="https://"
+            {...register("websiteUrl")}
+          />
         </Field>
       </fieldset>
 
       <fieldset className="space-y-4">
-        <legend className="mb-2 text-lg font-semibold">Budget and timing</legend>
-        <Field label="Budget" htmlFor="budget" required error={errors.budget?.message}>
+        <legend className="mb-2 text-lg font-semibold">
+          Budget and timing
+        </legend>
+        <Field
+          label="Budget"
+          htmlFor="budget"
+          required
+          error={errors.budget?.message}
+        >
           <Select id="budget" {...register("budget")}>
             <option value="">Select...</option>
             {budgetOptions.map((o) => (
@@ -131,7 +181,12 @@ export function InquiryForm() {
             ))}
           </Select>
         </Field>
-        <Field label="Timeline" htmlFor="timeline" required error={errors.timeline?.message}>
+        <Field
+          label="Timeline"
+          htmlFor="timeline"
+          required
+          error={errors.timeline?.message}
+        >
           <Select id="timeline" {...register("timeline")}>
             <option value="">Select...</option>
             {timelineOptions.map((o) => (
@@ -143,7 +198,9 @@ export function InquiryForm() {
         </Field>
       </fieldset>
 
-      <Button type="submit">Submit inquiry</Button>
+      <Button type="submit" disabled={isPending}>
+        {isPending ? "Submitting..." : "Submit inquiry"}
+      </Button>
     </form>
   );
 }

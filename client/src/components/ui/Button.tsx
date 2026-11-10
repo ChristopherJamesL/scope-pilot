@@ -17,13 +17,27 @@ function buttonStyles(variant: Variant, className?: string) {
 
 type ButtonProps = ComponentProps<"button"> & { variant?: Variant };
 
-export function Button({ variant = "primary", className, type = "button", ...props }: ButtonProps) {
-  return <button type={type} className={buttonStyles(variant, className)} {...props} />;
+export function Button({
+  variant = "primary",
+  className,
+  type = "button",
+  ...props
+}: ButtonProps) {
+  return (
+    <button
+      type={type}
+      className={buttonStyles(variant, className)}
+      {...props}
+    />
+  );
 }
 
 type ButtonLinkProps = ComponentProps<typeof Link> & { variant?: Variant };
 
-// Same look as Button, but renders a router link for navigation.
-export function ButtonLink({ variant = "primary", className, ...props }: ButtonLinkProps) {
+export function ButtonLink({
+  variant = "primary",
+  className,
+  ...props
+}: ButtonLinkProps) {
   return <Link className={buttonStyles(variant, className)} {...props} />;
 }

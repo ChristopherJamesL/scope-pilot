@@ -1,6 +1,5 @@
 import type { InquiryFormValues } from "./types";
 
-// Deliberately messy, like real inquiries. Used by the "Try a sample inquiry" button.
 export const sampleInquiries: InquiryFormValues[] = [
   {
     name: "Dana Whitfield",
@@ -22,7 +21,8 @@ export const sampleInquiries: InquiryFormValues[] = [
     companySize: "51-200",
     problem:
       "Our dispatchers spend half the day calling drivers for status updates and then retyping everything into our old ERP. Invoices go out late because proof-of-delivery photos arrive by email and someone has to match them by hand. We lose maybe 2 days of cash flow on every invoice. Looking for a way to automate the delivery update -> invoice step without replacing the ERP, which we're locked into until 2028.",
-    desiredSolution: "Driver mobile app that sends status + photo, auto-attached to the right job and invoice",
+    desiredSolution:
+      "Driver mobile app that sends status + photo, auto-attached to the right job and invoice",
     budget: "15k-50k",
     timeline: "3-6-months",
     existingTools: "Legacy ERP (SQL Server backend), Outlook, Excel",

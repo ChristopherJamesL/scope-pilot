@@ -16,14 +16,14 @@ type Theme = {
   question: string;
 };
 
-// Canned knowledge: if the inquiry mentions one of the keywords, add that theme's output.
 const themes: Theme[] = [
   {
     keywords: ["spreadsheet", "excel", "google sheet", "manual", "paper"],
     goal: "Replace manual spreadsheet or paper tracking with one system",
     feature: {
       name: "Central data hub",
-      description: "A single database and web app that replaces the current spreadsheets.",
+      description:
+        "A single database and web app that replaces the current spreadsheets.",
       priority: "must-have",
     },
     question: "Can you share an example of the spreadsheets you use today?",
@@ -33,17 +33,20 @@ const themes: Theme[] = [
     goal: "Speed up quoting, invoicing and payment tracking",
     feature: {
       name: "Quotes and invoicing",
-      description: "Generate quotes and invoices from stored data and track their payment status.",
+      description:
+        "Generate quotes and invoices from stored data and track their payment status.",
       priority: "must-have",
     },
-    question: "Which accounting software, if any, do invoices need to sync with?",
+    question:
+      "Which accounting software, if any, do invoices need to sync with?",
   },
   {
     keywords: ["schedule", "booking", "appointment", "calendar", "dispatch"],
     goal: "Reduce scheduling errors and double bookings",
     feature: {
       name: "Scheduling calendar",
-      description: "A shared calendar for bookings with conflict detection and reminders.",
+      description:
+        "A shared calendar for bookings with conflict detection and reminders.",
       priority: "must-have",
     },
     question: "How many people or resources need to be scheduled at once?",
@@ -53,7 +56,8 @@ const themes: Theme[] = [
     goal: "Get real-time visibility into stock and deliveries",
     feature: {
       name: "Inventory and delivery tracking",
-      description: "Track stock levels and delivery status with low-stock alerts.",
+      description:
+        "Track stock levels and delivery status with low-stock alerts.",
       priority: "must-have",
     },
     question: "How many products or locations need to be tracked?",
@@ -63,7 +67,8 @@ const themes: Theme[] = [
     goal: "Keep customer information and history in one place",
     feature: {
       name: "Customer records",
-      description: "A searchable customer list with contact details, notes and history.",
+      description:
+        "A searchable customer list with contact details, notes and history.",
       priority: "must-have",
     },
     question: "Roughly how many customers would the system need to hold?",
@@ -83,16 +88,20 @@ const themes: Theme[] = [
     goal: "Give customers an easy way to interact online",
     feature: {
       name: "Customer portal",
-      description: "A login area where customers can view and update their own information.",
+      description:
+        "A login area where customers can view and update their own information.",
       priority: "nice-to-have",
     },
-    question: "Should customers use this directly, or is it for your staff only?",
+    question:
+      "Should customers use this directly, or is it for your staff only?",
   },
 ];
 
 function firstSentence(text: string, max: number): string {
   const sentence = text.split(/(?<=[.!?])\s/)[0] ?? text;
-  return sentence.length > max ? `${sentence.slice(0, max - 3).trimEnd()}...` : sentence;
+  return sentence.length > max
+    ? `${sentence.slice(0, max - 3).trimEnd()}...`
+    : sentence;
 }
 
 function rateCompleteness(inquiry: CreateInquiryInput): Completeness {
@@ -110,13 +119,15 @@ function rateCompleteness(inquiry: CreateInquiryInput): Completeness {
   return "low";
 }
 
-// Deterministic, free stand-in for the real LLM. Same inquiry in, same analysis out.
-// The demo labels its results "Simulated" so nobody mistakes them for real AI.
 export class MockAIProvider implements AIProvider {
   readonly source = "MOCK" as const;
 
   async analyze(inquiry: CreateInquiryInput): Promise<Analysis> {
-    const text = [inquiry.problem, inquiry.desiredSolution, inquiry.existingTools]
+    const text = [
+      inquiry.problem,
+      inquiry.desiredSolution,
+      inquiry.existingTools,
+    ]
       .join(" ")
       .toLowerCase();
     const matched = themes.filter((theme) =>
@@ -131,13 +142,18 @@ export class MockAIProvider implements AIProvider {
       `Timeline: ${timelineLabels[inquiry.timeline]}`,
     ];
     if (inquiry.companySize) {
-      constraints.push(`Company size: ${companySizeLabels[inquiry.companySize]}`);
+      constraints.push(
+        `Company size: ${companySizeLabels[inquiry.companySize]}`,
+      );
     }
-    if (inquiry.existingTools) constraints.push(`Currently uses: ${inquiry.existingTools}`);
+    if (inquiry.existingTools)
+      constraints.push(`Currently uses: ${inquiry.existingTools}`);
 
     const openQuestions = matched.map((theme) => theme.question);
     if (!inquiry.desiredSolution) {
-      openQuestions.push("What would the ideal solution look like for your team?");
+      openQuestions.push(
+        "What would the ideal solution look like for your team?",
+      );
     }
     if (!inquiry.existingTools) {
       openQuestions.push("Which tools or systems are you using today?");
@@ -150,18 +166,23 @@ export class MockAIProvider implements AIProvider {
     return {
       clientSummary: `${who} needs help with: ${problemHeadline} We will review the details and follow up with you.`,
       problemSummary: `${inquiry.name}${inquiry.companyName ? ` (${inquiry.companyName})` : ""} reports: ${inquiry.problem}`,
-      goals: matched.length > 0
-        ? matched.map((theme) => theme.goal).slice(0, 10)
-        : ["Understand the problem in more detail before proposing a solution"],
-      proposedFeatures: matched.length > 0
-        ? matched.map((theme) => theme.feature).slice(0, 15)
-        : [
-            {
-              name: "Discovery workshop",
-              description: "A short session to map the current process and define requirements.",
-              priority: "must-have",
-            },
-          ],
+      goals:
+        matched.length > 0
+          ? matched.map((theme) => theme.goal).slice(0, 10)
+          : [
+              "Understand the problem in more detail before proposing a solution",
+            ],
+      proposedFeatures:
+        matched.length > 0
+          ? matched.map((theme) => theme.feature).slice(0, 15)
+          : [
+              {
+                name: "Discovery workshop",
+                description:
+                  "A short session to map the current process and define requirements.",
+                priority: "must-have",
+              },
+            ],
       constraints: constraints.slice(0, 10),
       openQuestions: openQuestions.slice(0, 10),
       suggestedNextSteps: [

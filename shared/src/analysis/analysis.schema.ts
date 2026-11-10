@@ -12,12 +12,9 @@ const proposedFeatureSchema = z.object({
   priority: z.enum(featurePriorities),
 });
 
-// Short list of short strings, used for goals, constraints, questions and next steps.
 const stringList = (maxItems: number) =>
   z.array(z.string().trim().min(1).max(300)).max(maxItems);
 
-// The shape of the AI's output. Both the mock and the real LLM provider must return this,
-// and it is stored as JSON in inquiries.analysis.
 export const analysisSchema = z.object({
   clientSummary: z.string().trim().min(1).max(600),
   problemSummary: z.string().trim().min(1).max(1500),
