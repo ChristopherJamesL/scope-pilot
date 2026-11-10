@@ -6,6 +6,13 @@ type SendOptions<T> = {
   status?: number;
 };
 
+type ErrorOptions = {
+  status: number;
+  code: string;
+  message: string;
+  details?: unknown;
+};
+
 export function sendOk<T>(
   res: Response,
   { data, meta = null, status = 200 }: SendOptions<T>,
@@ -19,13 +26,6 @@ export function sendCreated<T>(
 ) {
   return sendOk(res, { data, meta, status: 201 });
 }
-
-type ErrorOptions = {
-  status: number;
-  code: string;
-  message: string;
-  details?: unknown;
-};
 
 export function sendError(
   res: Response,

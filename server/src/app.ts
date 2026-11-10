@@ -1,6 +1,6 @@
 import express from "express";
 import { healthRouter } from "./features/health/index.js";
-import { inquiriesRouter } from "./features/inquiries/inquiries.routes.js";
+import { inquiriesRouter } from "./features/inquiries/index.js";
 import {
   errorHandler,
   notFoundHandler,
