@@ -1,13 +1,4 @@
-type SuccessBody<T> = {
-  success: true;
-  data: T;
-  meta: Record<string, unknown> | null;
-};
-
-type ErrorBody = {
-  success: false;
-  error: { code: string; message: string; details: unknown };
-};
+import type { ApiResponseBody } from "@scopepilot/shared";
 
 export class ApiError extends Error {
   readonly status: number;
@@ -31,7 +22,7 @@ export class ApiError extends Error {
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`/api${path}`, init);
 
-  let body: SuccessBody<T> | ErrorBody;
+  let body: ApiResponseBody<T>;
   try {
     body = await res.json();
   } catch {

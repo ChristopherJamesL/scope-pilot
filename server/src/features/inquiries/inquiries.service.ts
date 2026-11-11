@@ -5,7 +5,8 @@ export async function inquirySubmission(inquiryData: CreateInquiryInput) {
   return {
     status: "ok",
     timestamp: new Date().toISOString(),
-    message: "Inquiry submitted, no database connection at this time",
+    message:
+      "Message from server, inquiry submitted, no database connection at this time",
     data: inquiryData,
   };
 }

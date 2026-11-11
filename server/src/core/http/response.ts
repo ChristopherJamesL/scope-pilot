@@ -1,4 +1,5 @@
 import type { Response } from "express";
+import type { ApiSuccessBody, ApiErrorBody } from "@scopepilot/shared";
 
 type SendOptions<T> = {
   data: T;
@@ -17,7 +18,9 @@ export function sendOk<T>(
   res: Response,
   { data, meta = null, status = 200 }: SendOptions<T>,
 ) {
-  return res.status(status).json({ success: true, data, meta });
+  return res
+    .status(status)
+    .json({ success: true, data, meta } satisfies ApiSuccessBody<T>);
 }
 
 export function sendCreated<T>(
@@ -34,5 +37,5 @@ export function sendError(
   return res.status(status).json({
     success: false,
     error: { code, message, details },
-  });
+  } satisfies ApiErrorBody);
 }
