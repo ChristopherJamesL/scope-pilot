@@ -1,10 +1,9 @@
-import type { CreateInquiryInput } from "@scopepilot/shared";
 import { apiPost } from "../../lib/api-client";
-
-export type InquirySubmissionResponse = {
-  message: string;
-};
+import type {
+  CreateInquiryInput,
+  PublicInquirySummary,
+} from "@scopepilot/shared";
 
 export function submitInquiry(input: CreateInquiryInput) {
-  return apiPost<InquirySubmissionResponse>("/inquiries", input);
+  return apiPost<PublicInquirySummary>("/inquiries", input);
 }

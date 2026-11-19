@@ -51,8 +51,6 @@ export function InquiryForm() {
   }
 
   function onSubmit(values: CreateInquiryInput) {
-    console.log("onSubmit hit on client end...");
-    console.log("Running client function with values: ", values);
     mutate(values);
   }
 
