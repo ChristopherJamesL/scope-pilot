@@ -2,9 +2,11 @@ import { z } from "zod";
 
 export const featurePriorities = ["must-have", "nice-to-have"] as const;
 export const completenessLevels = ["low", "medium", "high"] as const;
+export const analysisSources = ["MOCK", "LLM"] as const;
 
 export type FeaturePriority = (typeof featurePriorities)[number];
 export type Completeness = (typeof completenessLevels)[number];
+export type AnalysisSource = (typeof analysisSources)[number];
 
 const proposedFeatureSchema = z.object({
   name: z.string().trim().min(1).max(100),
