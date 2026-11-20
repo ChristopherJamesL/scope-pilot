@@ -1,7 +1,8 @@
-import type { Request, Response } from "express";
 import { sendCreated } from "../../core/http/response.js";
 import { inquirySubmission } from "./inquiries.service.js";
+import { toPublicSummary } from "./inquiries.mapper.js";
 
+import type { Request, Response } from "express";
 import type { CreateInquiryInput } from "@scopepilot/shared";
 
 export async function httpInquirySubmission(
@@ -12,5 +13,5 @@ export async function httpInquirySubmission(
 
   const result = await inquirySubmission(inquiryData);
 
-  return sendCreated(res, { data: result });
+  return sendCreated(res, { data: toPublicSummary(result) });
 }

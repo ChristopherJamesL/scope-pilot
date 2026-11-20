@@ -4,8 +4,6 @@ import { submitInquiry } from "./api";
 export function useSubmitInquiry() {
   return useMutation({
     mutationFn: submitInquiry,
-    onSuccess: (data) => {
-      console.log("Inquiry submitted successfully:", data);
-    },
+    onSuccess: (data) => {},
   });
 }

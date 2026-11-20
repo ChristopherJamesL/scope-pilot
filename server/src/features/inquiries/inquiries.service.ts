@@ -3,11 +3,17 @@ import { analyzeInquiry } from "../analysis/index.js";
 import type { CreateInquiryInput } from "@scopepilot/shared";
 
 export async function inquirySubmission(inquiryData: CreateInquiryInput) {
-  console.log("Server inquiry endpoint hit, running function...");
-
   const inquiry = await createInquiry(inquiryData);
 
-  const { analysis, source } = await analyzeInquiry(inquiryData);
+  try {
+    const { analysis, source } = await analyzeInquiry(inquiryData);
 
-  return saveAnalysis(inquiry.id, analysis, source);
+    return await saveAnalysis(inquiry.id, analysis, source);
+  } catch (e) {
+    console.error(
+      `Inquiry submission success, failure on inquiry analysis with inquiry id: ${inquiry.id}`,
+      e,
+    );
+    return inquiry;
+  }
 }
